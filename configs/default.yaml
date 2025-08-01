@@ -1,6 +1,7 @@
 model:
   name_or_path: google/flan-t5-small
   save_dir: model/polite-rewriter
+  version: baseline_v0
 
 data:
   train_path: data/polite_pairs.json
@@ -10,7 +11,7 @@ data:
 training:
   epochs: 8
   batch_size: 8
-  learning_rate: 3e-5
+  learning_rate: 0.00003
   fp16: true
   logging_steps: 50
   save_total_limit: 2

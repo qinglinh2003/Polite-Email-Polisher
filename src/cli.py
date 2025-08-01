@@ -17,8 +17,11 @@ def run_infer(config, text):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, required=True, help="Path to config YAML")
-    parser.add_argument("--mode", choices=["train", "infer"], required=True)
+    parser.add_argument("--mode", choices=["train", "infer", "evaluate"], required=True)
     parser.add_argument("--text", type=str, help="Text input for inference mode")
+    parser.add_argument("--data", type=str, help="Dataset path for evaluation mode")
+    parser.add_argument("--num_cases", type=int, default=5, help="Number of cases for qualitative sampling")
+    parser.add_argument("--seed", type=int, default=42, help="Random seed for sampling")
     args = parser.parse_args()
 
     config = load_config(args.config)
@@ -29,6 +32,16 @@ def main():
         if not args.text:
             raise ValueError("Please provide --text for inference mode.")
         run_infer(config, args.text)
+    elif args.mode == "evaluate":
+        if not args.data:
+            raise ValueError("Please provide --data for evaluation mode.")
+        from evaluate_model import evaluate_model
+        evaluate_model(
+            config_path=args.config,
+            data_path=args.data,
+            num_cases=args.num_cases,
+            seed=args.seed
+        )
 
 if __name__ == "__main__":
     main()
