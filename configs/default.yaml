@@ -5,6 +5,7 @@ model:
 
 data:
   train_path: data/polite_pairs.json
+  test_path: data/test_pairs.json
   val_ratio: 0.1
   max_length: 64
 

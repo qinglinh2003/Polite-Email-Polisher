@@ -6,8 +6,9 @@ from infer import polite_rewrite
 from case_sampling import sample_cases 
 import os
 
-def evaluate_model(config_path, data_path, num_cases=5, seed=42):
+def evaluate_model(config_path, num_cases=5, seed=42):
     config = load_config(config_path)
+    data_path = config["data"]["test_path"]
     version = config["model"]["version"]
     exp_dir = os.path.join("experiments", version)
     os.makedirs(exp_dir, exist_ok=True)
