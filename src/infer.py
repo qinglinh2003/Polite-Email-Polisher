@@ -2,8 +2,12 @@ import sys
 import torch
 from utils import load_model, get_tokenizer
 
-def polite_rewrite(text: str, model_dir: str = "model/polite-rewriter", max_length: int = 64):
+def polite_rewrite(text: str, config: dict):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    model_dir = config["model"]["save_dir"]
+    max_length = config["data"]["max_length"]
+    num_beams = config["inference"]["num_beams"]
 
     tokenizer = get_tokenizer(model_dir)
     model = load_model(model_dir).to(device)
@@ -20,10 +24,5 @@ def polite_rewrite(text: str, model_dir: str = "model/polite-rewriter", max_leng
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python infer.py \"Your sentence here.\"")
-        sys.exit(1)
+    raise ValueError("Please run this script via cli.py using --mode infer --text '...'")
 
-    input_text = sys.argv[1]
-    result = polite_rewrite(input_text)
-    print("Polite Version:", result)
