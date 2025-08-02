@@ -26,10 +26,17 @@ def tokenize_batch(tokenizer, batch, max_length=64):
     inputs = tokenizer(batch["input"], padding="max_length", truncation=True, max_length=max_length)
     targets = tokenizer(batch["target"], padding="max_length", truncation=True, max_length=max_length)
 
+    labels = []
+    for target_ids in targets["input_ids"]:
+        labels.append([
+            token_id if token_id != tokenizer.pad_token_id else -100
+            for token_id in target_ids
+        ])
+
     return {
         "input_ids": inputs["input_ids"],
         "attention_mask": inputs["attention_mask"],
-        "labels": targets["input_ids"]
+        "labels": labels  
     }
 
   

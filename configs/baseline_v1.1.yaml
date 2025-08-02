@@ -1,10 +1,10 @@
 model:
   name_or_path: google/flan-t5-small
-  save_dir: model/baseline_v0
-  version: baseline_v0
+  save_dir: model/baseline_v1.1
+  version: baseline_v1.1
 
 data:
-  train_path: data/polite_pairs.json
+  train_path: data/train_1k.json
   test_path: data/test_pairs.json
   val_ratio: 0.1
   max_length: 64
@@ -15,7 +15,7 @@ training:
   epochs: 10
   batch_size: 16
   learning_rate: 0.00003
-  fp16: true
+  fp16: false
   logging_steps: 50
   save_total_limit: 2
 
