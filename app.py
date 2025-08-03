@@ -1,5 +1,5 @@
 import streamlit as st
-from models.model import load_model, polite_rewrite
+from app.model import load_model, polite_rewrite
 
 @st.cache_resource
 def get_model():

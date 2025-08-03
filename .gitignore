@@ -1,7 +1,9 @@
 __pycache__/
 data/*.json
-models/
+model/
 *.pyc
 .env
 experiments/
-evaluation/checkpoints/
+evaluation/politeness_scorer/checkpoints/
+evaluation/politeness_scorer/lightning_logs/
+evaluation/politeness_scorer/model/
