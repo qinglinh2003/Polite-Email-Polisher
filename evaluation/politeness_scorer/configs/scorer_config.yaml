@@ -1,0 +1,10 @@
+model:
+  pretrained_model: xlm-roberta-base
+  learning_rate: 0.000005
+  batch_size: 4
+  max_length: 128
+  binary: false
+train:
+  num_warmup_steps: 0
+  epochs: 5
+  seed: 42

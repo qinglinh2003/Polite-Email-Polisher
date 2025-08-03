@@ -1,6 +1,7 @@
 __pycache__/
 data/*.json
-model/
+models/
 *.pyc
 .env
 experiments/
+evaluation/checkpoints/
