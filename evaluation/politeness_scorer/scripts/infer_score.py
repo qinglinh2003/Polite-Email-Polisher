@@ -1,6 +1,6 @@
 import torch
 from transformers import AutoTokenizer
-from models.politeness_regressor import PolitenessRegressor
+from evaluation.politeness_scorer.models.politeness_regressor import PolitenessRegressor
 import argparse
 import pandas as pd
 
