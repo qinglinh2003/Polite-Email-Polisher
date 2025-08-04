@@ -1,6 +1,6 @@
 import torch
 from transformers import AutoTokenizer
-from models.politeness_regressor import PolitenessRegressor
+from .models.politeness_regressor import PolitenessRegressor
 
 class PolitenessScorer:
     def __init__(self, model_path, pretrained_model="xlm-roberta-base", max_length=128):
