@@ -43,14 +43,19 @@ def evaluate_model(config_path, num_cases=5, seed=42):
 
     input_scores = scorer.score(inputs)
     prediction_scores = scorer.score(predictions)
-    avg_delta_politeness = (sum(prediction_scores) - sum(input_scores)) / len(prediction_scores)
+    deltas = [pred - orig for pred, orig in zip(prediction_scores, input_scores)]
+    avg_delta_politeness = sum(deltas) / len(deltas)
     
+    num_total = len(deltas)
+    num_improved = sum(1 for d in deltas if d > 0)
+    improved_ratio = num_improved / num_total
 
     metrics = {
         "BLEU": bleu_result["bleu"],
         "ROUGE-1": _get_f1(rouge_result["rouge1"]),
         "ROUGE-L": _get_f1(rouge_result["rougeL"]),
         "Average Delta Politeness": avg_delta_politeness,
+        "Improved Ratio": improved_ratio,
         "date": __import__("datetime").date.today().isoformat(),
         "data": os.path.basename(data_path)
     }
