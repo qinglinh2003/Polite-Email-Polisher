@@ -4,6 +4,7 @@ import evaluate
 from cli import load_config
 from infer import polite_rewrite
 from case_sampling import sample_cases 
+from evaluation.politeness_scorer.scorer import PolitenessScorer
 import os
 
 def evaluate_model(config_path, num_cases=5, seed=42):
@@ -27,22 +28,30 @@ def evaluate_model(config_path, num_cases=5, seed=42):
     bleu = evaluate.load("bleu")
     rouge = evaluate.load("rouge")
 
-
-    bleu_result = bleu.compute(predictions=predictions,
-                               references=[[r] for r in references])
-
+    bleu_result = bleu.compute(predictions=predictions, references=[[r] for r in references])
     rouge_result = rouge.compute(predictions=predictions, references=references, use_stemmer=True, use_aggregator=True)
 
     def _get_f1(score):
         return score.mid.fmeasure if hasattr(score, "mid") else float(score)
 
+    scorer = PolitenessScorer(
+    model_path="evaluation/politeness_scorer/checkpoints/politeness_scorer.ckpt",
+    pretrained_model="xlm-roberta-base"
+    )
+
+    politeness_scores = scorer.score(predictions)
+    avg_politeness = sum(politeness_scores) / len(politeness_scores)
+    
+
     metrics = {
         "BLEU": bleu_result["bleu"],
         "ROUGE-1": _get_f1(rouge_result["rouge1"]),
         "ROUGE-L": _get_f1(rouge_result["rougeL"]),
+        "Average Politeness": avg_politeness,
         "date": __import__("datetime").date.today().isoformat(),
         "data": os.path.basename(data_path)
     }
+
     with open(os.path.join(exp_dir, "metrics.json"), "w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2)
 
